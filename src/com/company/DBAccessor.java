@@ -128,7 +128,7 @@ public class DBAccessor {
 		statement = conn.createStatement();
 		statement.executeUpdate("INSERT INTO autors VALUES ("+id+",'"+nom+"','"+any_naixement+"','"+nacionalitat+"','"+actiu+"')");
 
-
+		conn.commit();
 	}
 
 	public void altaRevista() throws SQLException, NumberFormatException, IOException, ParseException {
@@ -145,7 +145,7 @@ public class DBAccessor {
 		Statement statement = null;
 		statement = conn.createStatement();
 		statement.executeUpdate("INSERT INTO revistes (id_revista, titol, data_publicacio) VALUES ("+id+",'"+titol+"','"+date+"')");
-
+		conn.commit();
 	}
 
 
@@ -155,8 +155,38 @@ public class DBAccessor {
 		// d'article, excepte aquells que poden ser nuls , i realitza la
 		// inserció d'un registre
 
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Scanner reader = new Scanner(System.in);
 
-		
+
+		System.out.println("Introdueix el id del article");
+		int idAr = reader.nextInt();
+
+		System.out.println("Introdueix el id del autor del article");
+		reader.nextLine();
+		int idAutor = reader.nextInt();
+
+		System.out.println("Introdueix el titol del article");
+		reader.nextLine();
+		String titolAr = reader.nextLine();
+
+		System.out.println("Introdueix la data de publicacio (yyyy-mm-dd)");
+		Date date = format.parse(reader.nextLine());
+
+		System.out.println("Introdueix si el article es publicable:(S/N)");
+		String publicable = reader.nextLine();
+
+		System.out.println("Introdueix el id de la Revista:)");
+		int idRevista = reader.nextInt();
+
+
+		Statement statement = null;
+		statement = conn.createStatement();
+//		statement.executeUpdate("INSERT INTO articles VALUES ('"+idAr+"','"+date+"','"+idAutor+"','"+idRevista+"','"+publicable+"','"+titolAr+"','"+"')");
+		statement.executeUpdate("INSERT INTO articles VALUES ("+idAr+",'"+date+"',"+idAutor+","+idRevista+",'"+publicable +"','"+titolAr+"')");
+
+
+
 	}
 	
 	public void afegeixArticleARevista(Connection conn) throws SQLException {
@@ -273,7 +303,10 @@ public class DBAccessor {
 
 	public void sortir() throws SQLException {
 		System.out.println("ADÉU!");
+		conn.commit();
 		conn.close();
+		System.exit(0);
+
 	}
 	
 	// TODO

@@ -26,13 +26,13 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="3fcb5a8c-9348-473d-837b-175526ddb500">
-        <schema name="public" object-types="function, view, table" />
+        <schema name="public" object-types="function, sequence, index, dataset trigger, column, constraint, view, table" />
       </connection>
     </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="3fcb5a8c-9348-473d-837b-175526ddb500">
-      <console name="hemerotecaDB" type="STANDARD" schema="information_schema" session="Main"><![CDATA[select * from "public".autors]]></console>
+      <console name="hemerotecaDB" type="STANDARD" schema="information_schema" session="Main"><![CDATA[SELECT CURRENT_TIMESTAMP;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
