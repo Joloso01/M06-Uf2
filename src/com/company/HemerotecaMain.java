@@ -1,16 +1,13 @@
 package com.company;
 
-import java.awt.*;
 import java.io.IOException;
-import java.security.Identity;
-import java.security.KeyManagementException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 
 public class HemerotecaMain {
 
-	public static void main(String[] args) throws IOException, SQLException, ParseException, KeyManagementException {
+	public static void main(String[] args) throws IOException, SQLException, ParseException {
 		Menu menu = new Menu();
 		Connection conn = null;
 		Identity identity;

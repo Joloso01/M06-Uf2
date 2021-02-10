@@ -1,13 +1,9 @@
 package com.company;
 
-import java.io.*;
-import java.security.Identity;
-import java.security.KeyManagementException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-import org.postgresql.*;
-
-
-@SuppressWarnings("ALL")
 public class Menu {
 	private int option;
 
@@ -48,7 +44,7 @@ public class Menu {
 		return option;
 	}
 
-	public Identity autenticacio(int intents) throws IOException, KeyManagementException {
+	public Identity autenticacio(int intents) throws IOException {
 		BufferedReader br1 = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("==============HEMEROTECA====================================");
 		System.out.println("============================================================");
@@ -59,7 +55,9 @@ public class Menu {
 		System.out.println("Inserta contrasenya: ");
 		String pass = br1.readLine();
 
-		return new Identity(usuari, pass);
+		Identity identity = null;
+		identity = new Identity(usuari, pass);
+		return identity;
 
 	}
 

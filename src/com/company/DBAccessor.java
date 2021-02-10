@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.security.Identity;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,22 +19,6 @@ public class DBAccessor {
 	private String passwd;
 	private String schema;
 	Connection conn = null;
-
-	public String getPort() {
-		return port;
-	}
-
-	public void setPort(String port) {
-		this.port = port;
-	}
-
-	public String getUser() {
-		return user;
-	}
-
-	public void setUser(String user) {
-		this.user = user;
-	}
 
 	/**
 	 * Initializes the class loading the database properties file and assigns
