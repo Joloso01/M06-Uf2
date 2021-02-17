@@ -73,7 +73,7 @@ public class DBAccessor {
 
 			// Utilitza connexió a la base de dades
 			conn = DriverManager.getConnection(url, identity.getUser(), identity.getPassword());
-			conn.setAutoCommit(false);
+			conn.setAutoCommit(true);
 		} catch (ClassNotFoundException e1) {
 			System.err.println("ERROR: Al Carregar el driver JDBC");
 			System.err.println(e1.getMessage());
@@ -155,7 +155,7 @@ public class DBAccessor {
 		// d'article, excepte aquells que poden ser nuls , i realitza la
 		// inserció d'un registre
 
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		//SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Scanner reader = new Scanner(System.in);
 
 
@@ -171,7 +171,7 @@ public class DBAccessor {
 		String titolAr = reader.nextLine();
 
 		System.out.println("Introdueix la data de publicacio (yyyy-mm-dd)");
-		Date date = format.parse(reader.nextLine());
+		java.sql.Date dateAr = java.sql.Date.valueOf(reader.nextLine());
 
 		System.out.println("Introdueix si el article es publicable:(S/N)");
 		String publicable = reader.nextLine();
@@ -179,14 +179,19 @@ public class DBAccessor {
 		System.out.println("Introdueix el id de la Revista:)");
 		int idRevista = reader.nextInt();
 
+//		Statement statement = null;
+//		statement = conn.createStatement();
 
-		Statement statement = null;
-		statement = conn.createStatement();
-//		statement.executeUpdate("INSERT INTO articles VALUES ('"+idAr+"','"+date+"','"+idAutor+"','"+idRevista+"','"+publicable+"','"+titolAr+"','"+"')");
-		statement.executeUpdate("INSERT INTO articles VALUES ("+idAr+",'"+date+"',"+idAutor+","+idRevista+",'"+publicable +"','"+titolAr+"')");
+		String sql = "INSERT INTO articles (id_article, id_autor, titol, data_creacio, publicable) VALUES (?,?,?,?,?)";
+		conn.prepareStatement(sql);
+		PreparedStatement pst = conn.prepareStatement(sql);
 
-
-
+		pst.setInt(1,idAr);
+		pst.setInt(2,idAutor);
+		pst.setString(3,titolAr);
+		pst.setDate(4, dateAr);
+		pst.setString(5,publicable);
+		pst.executeUpdate();
 	}
 	
 	public void afegeixArticleARevista(Connection conn) throws SQLException {
