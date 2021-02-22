@@ -192,6 +192,7 @@ public class DBAccessor {
 		pst.setDate(4, dateAr);
 		pst.setString(5,publicable);
 		pst.executeUpdate();
+		//
 	}
 	
 	public void afegeixArticleARevista(Connection conn) throws SQLException {
