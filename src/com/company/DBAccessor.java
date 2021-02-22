@@ -127,8 +127,6 @@ public class DBAccessor {
 		Statement statement = null;
 		statement = conn.createStatement();
 		statement.executeUpdate("INSERT INTO autors VALUES ("+id+",'"+nom+"','"+any_naixement+"','"+nacionalitat+"','"+actiu+"')");
-
-		conn.commit();
 	}
 
 	public void altaRevista() throws SQLException, NumberFormatException, IOException, ParseException {
@@ -145,7 +143,6 @@ public class DBAccessor {
 		Statement statement = null;
 		statement = conn.createStatement();
 		statement.executeUpdate("INSERT INTO revistes (id_revista, titol, data_publicacio) VALUES ("+id+",'"+titol+"','"+date+"')");
-		conn.commit();
 	}
 
 
@@ -176,9 +173,6 @@ public class DBAccessor {
 		System.out.println("Introdueix si el article es publicable:(S/N)");
 		String publicable = reader.nextLine();
 
-		System.out.println("Introdueix el id de la Revista:)");
-		int idRevista = reader.nextInt();
-
 //		Statement statement = null;
 //		statement = conn.createStatement();
 
@@ -192,7 +186,6 @@ public class DBAccessor {
 		pst.setDate(4, dateAr);
 		pst.setString(5,publicable);
 		pst.executeUpdate();
-		//
 	}
 	
 	public void afegeixArticleARevista(Connection conn) throws SQLException {
@@ -205,13 +198,13 @@ public class DBAccessor {
 		try {
 			rs = st.executeQuery("SELECT * FROM articles WHERE id_revista IS NULL");
 
-			if (rs.getFetchSize() == 0) {
+			if (!rs.next()) {
 				System.out.println("No hi ha articles pendents d'associar revistes. ");
 			} else {
-				while (rs.next()) {
+				do{
 					System.out.println("Titol: " + rs.getString("titol"));
 					
-					System.out.println("Vol incorporar aquest article a una revista?");
+					System.out.println("Vol incorporar aquest article a una revista? (si/no)");
 					String resposta = br.readLine();
 
 					if (resposta.equals("si")) {
@@ -223,7 +216,7 @@ public class DBAccessor {
 						// actualitza la fila
 						rs.updateRow();
 					}
-				}
+				}while (rs.next());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -244,8 +237,44 @@ public class DBAccessor {
 		// demanar el nou títol per la revista
 		// actualitzar el camp
 		// actualitzar la fila
-		
-	
+
+		ResultSet rs = null;
+		Statement st = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+		InputStreamReader isr = new InputStreamReader(System.in);
+		Scanner sc = new Scanner(System.in);
+		BufferedReader br = new BufferedReader(isr);
+
+		System.out.println(" Actualizar el titulo revistas");
+
+
+		try {
+			st = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+			rs = st.executeQuery("SELECT * FROM revistes");
+
+			if (!rs.next()) {
+				System.out.println("No hi ha revistes. ");
+			} else {
+				 do{
+					System.out.println("Titol: " + rs.getString("titol"));
+					System.out.println("Quiere modificar esta revista: (si/no)");
+					String esta;
+					esta = sc.nextLine();
+						if (esta.equals("si")){
+							System.out.println("Introduzca el nuevo titulo de la revista:");
+							String resposta = sc.nextLine();
+							// actualitza el camp
+							rs.updateString("titol", resposta);
+							// actualitza la fila
+							rs.updateRow();
+						}
+
+
+				}while (rs.next());
+				 //se tiene que actualizar el next abajo porque arriba ya coje el primero.
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 
@@ -267,6 +296,37 @@ public class DBAccessor {
 		// actualitzar la fila
 		// en altre cas imprimir "operació cancel·lada"
 
+		ResultSet rs = null;
+		Statement st = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+		InputStreamReader isr = new InputStreamReader(System.in);
+		BufferedReader br = new BufferedReader(isr);
+
+		try {
+			rs = st.executeQuery("SELECT * FROM articles WHERE id_revista IS NOT NULL ");
+
+			if (!rs.next()) {
+				System.out.println("No hi ha articles pendents d'associar revistes. ");
+			} else {
+				do{
+					System.out.println("Titol: " + rs.getString("titol"));
+
+					System.out.println("quiere desasignar este articulo a una revista? (si/no)");
+					String resposta = br.readLine();
+
+					if (resposta.equals("si")) {
+						// demana l'identificador de la revista
+						System.out.println("Introdueix el id de la revista");
+//						int idRevista = Integer.parseInt(null);
+						// actualitza el camp
+						rs.updateNull("id_revista");
+						// actualitza la fila
+						rs.updateRow();
+					}
+				}while (rs.next());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 
