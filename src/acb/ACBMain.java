@@ -48,23 +48,23 @@ public class ACBMain {
 				break;
 
 			case 6:
-//				dbaccessor.altaArticle();
+				dbaccessor.mostraJugadorsSenseEquip();
 				break;
 
 			case 7:
-//				dbaccessor.actualitzarTitolRevistes(conn);
+				dbaccessor.afegeixJugadorAEquip(connection);
 				break;
 
 			case 8:
-//				dbaccessor.afegeixArticleARevista(conn);
+				dbaccessor.desassignaArticleARevista(connection);
 				break;
 
 			case 9:
-//				dbaccessor.desassignaArticleARevista(conn);
+				dbaccessor.carregaJugador(connection);
 				break;
 
 			case 10:
-//				dbaccessor.carregaAutors(conn);
+				dbaccessor.sortir();
 				break;
 
 

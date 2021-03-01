@@ -338,7 +338,7 @@ public class DBAccessor {
 
 					if (resposta.equals("si")) {
 						// actualitza el camp
-						rs.updateNull("id_revista");
+						rs.updateNull("team_name");
 						// actualitza la fila
 						rs.updateRow();
 					}
@@ -426,7 +426,7 @@ public class DBAccessor {
 	}
 	
 	// TODO
-	public void carregaAutors(Connection conn) throws SQLException, NumberFormatException, IOException {
+	public void carregaJugador(Connection conn) throws SQLException, NumberFormatException, IOException {
 		// TODO
 		// mitjançant Prepared Statement
 		// per a cada línia del fitxer autors.csv
