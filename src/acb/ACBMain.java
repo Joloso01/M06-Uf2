@@ -36,15 +36,15 @@ public class ACBMain {
 				break;
 
 			case 3:
-//				dbaccessor.mostraRevistesArticlesAutors();
+				dbaccessor.crearEquip();
 				break;
 
 			case 4:
-//				dbaccessor.altaAutor();
+				dbaccessor.crearJugador();
 				break;
 
 			case 5:
-//				dbaccessor.altaRevista();
+				dbaccessor.crearPartit();
 				break;
 
 			case 6:

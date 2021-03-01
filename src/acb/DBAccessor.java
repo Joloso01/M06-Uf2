@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -110,43 +109,68 @@ public class DBAccessor {
 	}
 
 
-	public void altaAutor() throws SQLException, IOException {
+	public void crearJugador() throws SQLException, IOException {
 		Scanner reader = new Scanner(System.in);
-		System.out.println("Introdueix el id de l'autor");
-		int id = reader.nextInt();
+		System.out.println("Introdueix el codi de la licencia de la federacio");
+		String  licencia = reader.nextLine();
 		System.out.println("Introdueix el nom");
-		reader.nextLine();
 		String nom = reader.nextLine();
+		System.out.println("Introdueix el cognom");
+		String cognom = reader.nextLine();
 		System.out.println("Introdueix l'any de naixement");
 		String any_naixement = reader.nextLine();
-		System.out.println("Introdueix la nacionalitat");
-		String nacionalitat = reader.nextLine();
-		System.out.println("Es actiu? (S/N)");
-		String actiu = reader.nextLine();
-		
-		Statement statement = null;
-		statement = conn.createStatement();
-		statement.executeUpdate("INSERT INTO autors VALUES ("+id+",'"+nom+"','"+any_naixement+"','"+nacionalitat+"','"+actiu+"')");
-	}
-
-	public void altaRevista() throws SQLException, NumberFormatException, IOException, ParseException {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		Scanner reader = new Scanner(System.in);
-		System.out.println("Introdueix el id de la revista");
-		int id = reader.nextInt();
-		System.out.println("Introdueix el titol");
+		System.out.println("Introdueix el genera (M/F)");
+		String genera = reader.nextLine();
+		System.out.println("Introdueix la altura");
+		int altura = reader.nextInt();
+		System.out.println("Introdueix el nom del equip");
 		reader.nextLine();
-		String titol = reader.nextLine();
-		System.out.println("Introdueix la data de publicacio (yyyy-mm-dd)");
-		Date date = format.parse(reader.nextLine());
-		
-		Statement statement = null;
-		statement = conn.createStatement();
-		statement.executeUpdate("INSERT INTO revistes (id_revista, titol, data_publicacio) VALUES ("+id+",'"+titol+"','"+date+"')");
+		String nom_del_equip = reader.nextLine();
+		System.out.println("mvp_totals:");
+		int mvp = reader.nextInt();
+
+		String sql = "INSERT INTO player (federation_license_code, first_name, last_name, birth_date, gender, height, team_name, mvp_total) VALUES (?,?,?,?,?,?,?,?)";
+		conn.prepareStatement(sql);
+		PreparedStatement pst = conn.prepareStatement(sql);
+
+		pst.setString(1,licencia);
+		pst.setString(2,nom);
+		pst.setString(3,cognom);
+		pst.setDate(4, Date.valueOf(any_naixement));
+		pst.setString(5,genera);
+		pst.setInt(6,altura);
+		pst.setString(7,nom_del_equip);
+		pst.setInt(8,mvp);
+		pst.executeUpdate();
+	}
+
+	public void crearEquip() throws SQLException, NumberFormatException {
+		Scanner reader = new Scanner(System.in);
+		System.out.println("Introdueix el nom del equip");
+		String  nom = reader.nextLine();
+		System.out.println("Introdueix el tipus de equip (Club / National Team)");
+		String tipus = reader.nextLine();
+		System.out.println("Introdueix el pais del equip");
+		String  pais = reader.nextLine();
+		System.out.println("Introdueix la ciutat del equip");
+		String  ciutat = reader.nextLine();
+		System.out.println("Introdueix el estadi del equip");
+		String  estadi = reader.nextLine();
+
+		String sql = "INSERT INTO team (name, type, country, city, court_name) VALUES (?,?,?,?,?)";
+		conn.prepareStatement(sql);
+		PreparedStatement pst = conn.prepareStatement(sql);
+
+		pst.setString(1,nom);
+		pst.setString(2,tipus);
+		pst.setString(3,pais);
+		pst.setString(4, ciutat);
+		pst.setString(5,estadi);
+		pst.executeUpdate();
 	}
 
 
-	public void altaArticle() throws SQLException, NumberFormatException, IOException, ParseException {
+	public void crearPartit() throws SQLException, NumberFormatException {
 
 		// TODO demana per consola els valors dels diferents atributs
 		// d'article, excepte aquells que poden ser nuls , i realitza la
@@ -156,39 +180,38 @@ public class DBAccessor {
 		Scanner reader = new Scanner(System.in);
 
 
-		System.out.println("Introdueix el id del article");
-		int idAr = reader.nextInt();
+		System.out.println("Introdueix el equip local ");
+		String equipLocal = reader.nextLine();
 
-		System.out.println("Introdueix el id del autor del article");
-		reader.nextLine();
-		int idAutor = reader.nextInt();
+		System.out.println("Introdueix el equip visitant");
+		String equipVisitant = reader.nextLine();
 
-		System.out.println("Introdueix el titol del article");
-		reader.nextLine();
-		String titolAr = reader.nextLine();
-
-		System.out.println("Introdueix la data de publicacio (yyyy-mm-dd)");
+		System.out.println("Introdueix el data del partit (yyyy-mm-dd)");
 		java.sql.Date dateAr = java.sql.Date.valueOf(reader.nextLine());
 
-		System.out.println("Introdueix si el article es publicable:(S/N)");
-		String publicable = reader.nextLine();
+		System.out.println("Introdueix la asistencia");
+		int asistencia = reader.nextInt();
+
+		System.out.println("Introdueix el mvp del partit (numero de llicencia)");
+		reader.nextLine();
+		String numeroLlicencia = reader.nextLine();
 
 //		Statement statement = null;
 //		statement = conn.createStatement();
 
-		String sql = "INSERT INTO articles (id_article, id_autor, titol, data_creacio, publicable) VALUES (?,?,?,?,?)";
+		String sql = "INSERT INTO match (home_team, visitor_team, match_date, attendance, mvp_player) VALUES (?,?,?,?,?)";
 		conn.prepareStatement(sql);
 		PreparedStatement pst = conn.prepareStatement(sql);
 
-		pst.setInt(1,idAr);
-		pst.setInt(2,idAutor);
-		pst.setString(3,titolAr);
-		pst.setDate(4, dateAr);
-		pst.setString(5,publicable);
+		pst.setString(1,equipLocal);
+		pst.setString(2,equipVisitant);
+		pst.setDate(3,dateAr);
+		pst.setInt(4, asistencia);
+		pst.setString(5,numeroLlicencia);
 		pst.executeUpdate();
 	}
 	
-	public void afegeixArticleARevista(Connection conn) throws SQLException {
+	public void afegeixJugadorAEquip(Connection conn) throws SQLException {
 
 		ResultSet rs = null;
 		Statement st = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
@@ -196,23 +219,23 @@ public class DBAccessor {
 		BufferedReader br = new BufferedReader(isr);
 
 		try {
-			rs = st.executeQuery("SELECT * FROM articles WHERE id_revista IS NULL");
+			rs = st.executeQuery("SELECT * FROM player WHERE team_name IS NULL");
 
 			if (!rs.next()) {
-				System.out.println("No hi ha articles pendents d'associar revistes. ");
+				System.out.println("No hi ha jugadors pendents d'associar a equips. ");
 			} else {
 				do{
-					System.out.println("Titol: " + rs.getString("titol"));
+					System.out.println("Nom y cognom: " + rs.getString("first_name")+" "+rs.getString("last_name"));
 					
-					System.out.println("Vol incorporar aquest article a una revista? (si/no)");
+					System.out.println("Vol incorporar aquest jugador a un equip? (si/no)");
 					String resposta = br.readLine();
 
 					if (resposta.equals("si")) {
 						// demana l'identificador de la revista
-						System.out.println("Introdueix el id de la revista");
-						int idRevista = Integer.parseInt(br.readLine());
+						System.out.println("Introdueix el nom del equip:");
+						String  nomEquip = br.readLine();
 						// actualitza el camp
-						rs.updateInt("id_revista", idRevista);
+						rs.updateString("team_name", nomEquip);
 						// actualitza la fila
 						rs.updateRow();
 					}
@@ -279,7 +302,7 @@ public class DBAccessor {
 	
 
 	// TODO
-	public void desassignaArticleARevista(Connection conn) throws SQLException, IOException {
+	public void desassignaArticleARevista(Connection conn) throws SQLException {
 
 		// TODO
 		// seguint l'exemple de la funció afegeixArticleARevista:
@@ -302,21 +325,18 @@ public class DBAccessor {
 		BufferedReader br = new BufferedReader(isr);
 
 		try {
-			rs = st.executeQuery("SELECT * FROM articles WHERE id_revista IS NOT NULL ");
+			rs = st.executeQuery("SELECT * FROM player WHERE team_name IS NOT NULL ");
 
 			if (!rs.next()) {
-				System.out.println("No hi ha articles pendents d'associar revistes. ");
+				System.out.println("No hi ha jugadors pendents d'associar a equips. ");
 			} else {
 				do{
-					System.out.println("Titol: " + rs.getString("titol"));
+					System.out.println("Nom y Cognom: " + rs.getString("first_name")+" "+rs.getString("last_name"));
 
-					System.out.println("quiere desasignar este articulo a una revista? (si/no)");
+					System.out.println("quiere desasignar este jugador de un equipo? (si/no)");
 					String resposta = br.readLine();
 
 					if (resposta.equals("si")) {
-						// demana l'identificador de la revista
-						System.out.println("Introdueix el id de la revista");
-//						int idRevista = Integer.parseInt(null);
 						// actualitza el camp
 						rs.updateNull("id_revista");
 						// actualitza la fila
@@ -345,6 +365,25 @@ public class DBAccessor {
 											"\tAltura: " + rs.getInt("height")+
 											"\tEquip: " + rs.getString("team_name")+
 											"\tMVP totales: "+ rs.getInt("mvp_total"));
+		rs.close();
+		st.close();
+	}
+
+
+	public void mostraJugadorsSenseEquip() throws SQLException, IOException {
+		Statement st = conn.createStatement();
+		Scanner reader = new Scanner(System.in);
+		ResultSet rs;
+
+		rs = st.executeQuery("select * from player where team_name is null;");
+		while (rs.next()) System.out.println("ID: " +rs.getString("federation_license_code") +
+				"\tNom: " + rs.getString("first_name") +
+				"\tCognom: "+rs.getString("last_name")+
+				"\tData de naixement: " + rs.getString("birth_date") +
+				"\tGenero: " + rs.getString("gender") +
+				"\tAltura: " + rs.getInt("height")+
+				"\tEquip: " + rs.getString("team_name")+
+				"\tMVP totales: "+ rs.getInt("mvp_total"));
 		rs.close();
 		st.close();
 	}
