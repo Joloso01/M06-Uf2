@@ -1,9 +1,6 @@
 package com.company;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -314,9 +311,6 @@ public class DBAccessor {
 					String resposta = br.readLine();
 
 					if (resposta.equals("si")) {
-						// demana l'identificador de la revista
-						System.out.println("Introdueix el id de la revista");
-//						int idRevista = Integer.parseInt(null);
 						// actualitza el camp
 						rs.updateNull("id_revista");
 						// actualitza la fila

@@ -1,9 +1,6 @@
 package acb;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -429,9 +426,47 @@ public class DBAccessor {
 	public void carregaJugador(Connection conn) throws SQLException, NumberFormatException, IOException {
 		// TODO
 		// mitjançant Prepared Statement
-		// per a cada línia del fitxer autors.csv
+		// per a cada línia del fitxer estadistiques.csv
 		//realitzar la inserció corresponent
 
+
+
+		String sql = "INSERT INTO match_statistics (home_team, visitor_team, match_date, player, minutes_played, points, offensive_rebounds, defensive_rebounds, assists, committed_fouls, received_fouls, free_throw_attempts, free_throw_made, two_point_attempts, two_point_made, three_point_attempts, three_point_made, blocks, blocks_against, steals, turnovers, mvp_score) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		BufferedReader bufferedReader =new BufferedReader(new FileReader("src/acb/estadistiques.csv"));
+		String linea = bufferedReader.readLine();
+
+		while (linea != null){
+			System.out.println(linea);
+			linea = bufferedReader.readLine();
+			String[] array;
+				 array = linea.split(",");
+
+			conn.prepareStatement(sql);
+			PreparedStatement pst = conn.prepareStatement(sql);
+			pst.setString(1,array[0]);
+			pst.setString(2,array[1]);
+			pst.setDate(3, Date.valueOf(array[2]));
+			pst.setString(4,array[3]);
+			pst.setInt(5, Integer.parseInt(array[4]));
+			pst.setInt(6, Integer.parseInt(array[5]));
+			pst.setInt(7, Integer.parseInt(array[6]));
+			pst.setInt(8, Integer.parseInt(array[7]));
+			pst.setInt(9, Integer.parseInt(array[8]));
+			pst.setInt(10, Integer.parseInt(array[9]));
+			pst.setInt(11, Integer.parseInt(array[10]));
+			pst.setInt(12, Integer.parseInt(array[11]));
+			pst.setInt(13, Integer.parseInt(array[12]));
+			pst.setInt(14, Integer.parseInt(array[13]));
+			pst.setInt(15, Integer.parseInt(array[14]));
+			pst.setInt(16, Integer.parseInt(array[15]));
+			pst.setInt(17, Integer.parseInt(array[16]));
+			pst.setInt(18, Integer.parseInt(array[17]));
+			pst.setInt(19, Integer.parseInt(array[18]));
+			pst.setInt(20, Integer.parseInt(array[19]));
+			pst.setInt(21, Integer.parseInt(array[20]));
+			pst.setInt(22, Integer.parseInt(array[21]));
+			pst.executeUpdate();
+		}
 		
 	}
 }
