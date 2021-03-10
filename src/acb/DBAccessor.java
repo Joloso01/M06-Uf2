@@ -169,11 +169,6 @@ public class DBAccessor {
 
 	public void crearPartit() throws SQLException, NumberFormatException {
 
-		// TODO demana per consola els valors dels diferents atributs
-		// d'article, excepte aquells que poden ser nuls , i realitza la
-		// inserció d'un registre
-
-		//SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Scanner reader = new Scanner(System.in);
 
 
@@ -192,9 +187,6 @@ public class DBAccessor {
 		System.out.println("Introdueix el mvp del partit (numero de llicencia)");
 		reader.nextLine();
 		String numeroLlicencia = reader.nextLine();
-
-//		Statement statement = null;
-//		statement = conn.createStatement();
 
 		String sql = "INSERT INTO match (home_team, visitor_team, match_date, attendance, mvp_player) VALUES (?,?,?,?,?)";
 		conn.prepareStatement(sql);
@@ -350,7 +342,6 @@ public class DBAccessor {
 	
 	public void mostraJugadors() throws SQLException, IOException {
 		Statement st = conn.createStatement();
-		Scanner reader = new Scanner(System.in);
 		ResultSet rs;
 
 		rs = st.executeQuery("SELECT * FROM player");
@@ -423,7 +414,7 @@ public class DBAccessor {
 	}
 	
 	// TODO
-	public void carregaJugador(Connection conn) throws SQLException, NumberFormatException, IOException {
+	public void carregaJugador(Connection conn) throws SQLException, NumberFormatException, IOException, ParseException {
 		// TODO
 		// mitjançant Prepared Statement
 		// per a cada línia del fitxer estadistiques.csv
@@ -432,41 +423,69 @@ public class DBAccessor {
 
 
 		String sql = "INSERT INTO match_statistics (home_team, visitor_team, match_date, player, minutes_played, points, offensive_rebounds, defensive_rebounds, assists, committed_fouls, received_fouls, free_throw_attempts, free_throw_made, two_point_attempts, two_point_made, three_point_attempts, three_point_made, blocks, blocks_against, steals, turnovers, mvp_score) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-		BufferedReader bufferedReader =new BufferedReader(new FileReader("src/acb/estadistiques.csv"));
+
+
+//
+//			if (buscarPartido()){
+//
+//			}else {
+//
+//			}
+
+		}
+
+	public boolean buscarPartido() throws SQLException, ParseException, IOException {
+		Statement st = conn.createStatement();
+		ResultSet rs;
+		BufferedReader bufferedReader = new BufferedReader(new FileReader("estadistiques.csv"));
 		String linea = bufferedReader.readLine();
 
-		while (linea != null){
+		while (linea != null) {
 			System.out.println(linea);
 			linea = bufferedReader.readLine();
 			String[] array;
-				 array = linea.split(",");
+			array = linea.split(",");
 
-			conn.prepareStatement(sql);
-			PreparedStatement pst = conn.prepareStatement(sql);
-			pst.setString(1,array[0]);
-			pst.setString(2,array[1]);
-			pst.setDate(3, Date.valueOf(array[2]));
-			pst.setString(4,array[3]);
-			pst.setInt(5, Integer.parseInt(array[4]));
-			pst.setInt(6, Integer.parseInt(array[5]));
-			pst.setInt(7, Integer.parseInt(array[6]));
-			pst.setInt(8, Integer.parseInt(array[7]));
-			pst.setInt(9, Integer.parseInt(array[8]));
-			pst.setInt(10, Integer.parseInt(array[9]));
-			pst.setInt(11, Integer.parseInt(array[10]));
-			pst.setInt(12, Integer.parseInt(array[11]));
-			pst.setInt(13, Integer.parseInt(array[12]));
-			pst.setInt(14, Integer.parseInt(array[13]));
-			pst.setInt(15, Integer.parseInt(array[14]));
-			pst.setInt(16, Integer.parseInt(array[15]));
-			pst.setInt(17, Integer.parseInt(array[16]));
-			pst.setInt(18, Integer.parseInt(array[17]));
-			pst.setInt(19, Integer.parseInt(array[18]));
-			pst.setInt(20, Integer.parseInt(array[19]));
-			pst.setInt(21, Integer.parseInt(array[20]));
-			pst.setInt(22, Integer.parseInt(array[21]));
-			pst.executeUpdate();
+			rs = st.executeQuery("SELECT * FROM match where home_team ='" + array[0] + "' and visitor_team='" + array[1] + "' and match_date='" + array[2] + "'");
+			if (rs.getRow() == 0) {
+				System.out.println("el partido no ha sido encontrado creando partido");
+				crearPartitAuto(array[0], array[1], array[2]);
+				return false;
+			} else {
+				System.out.println("partido encontrado");
+				return true;
+			}
 		}
-		
+		return false;
+	}
+
+	public void crearPartitAuto(String equipoLocal, String equipoVisitante, String fechaDelPartido) throws SQLException, NumberFormatException, ParseException {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		java.util.Date parsed = null;
+		try {
+			parsed = sdf.parse(fechaDelPartido);
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		java.sql.Date data = new java.sql.Date(parsed.getTime());
+
+		System.out.println("Introdueix la asistencia");
+		int asistencia = 0;
+
+		System.out.println("Introdueix el mvp del partit (numero de llicencia)");
+		String numeroLlicencia = null;
+
+		String sql = "INSERT INTO match (home_team, visitor_team, match_date, attendance, mvp_player) VALUES (?,?,?,?,?)";
+		conn.prepareStatement(sql);
+		PreparedStatement pst = conn.prepareStatement(sql);
+
+		pst.setString(1,equipoLocal);
+		pst.setString(2,equipoVisitante);
+		pst.setDate(3, data);
+		pst.setInt(4, asistencia);
+		pst.setString(5,numeroLlicencia);
+		pst.executeUpdate();
 	}
 }

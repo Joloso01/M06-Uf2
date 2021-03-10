@@ -8,6 +8,10 @@ import java.text.ParseException;
 public class ACBMain {
 
 	public static void main(String[] args) throws IOException, SQLException, ParseException {
+		String prueba = "fern10";
+		String pruba2 = "test9";
+		System.out.println(prueba.hashCode());
+		System.out.println(pruba2.hashCode());
 		Menu menu = new Menu();
 		Connection connection = null;
 		Identity identity;
