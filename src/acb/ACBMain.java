@@ -8,16 +8,13 @@ import java.text.ParseException;
 public class ACBMain {
 
 	public static void main(String[] args) throws IOException, SQLException, ParseException {
-		String prueba = "fern10";
-		String pruba2 = "test9";
-		System.out.println(prueba.hashCode());
-		System.out.println(pruba2.hashCode());
 		Menu menu = new Menu();
 		Connection connection = null;
 		Identity identity;
 		int option;
 		int intents = 0;
 		DBAccessor dbaccessor = new DBAccessor();
+
 		dbaccessor.init();
 		while (intents < 3 && connection == null) {
 			identity = menu.autenticacio(intents);
@@ -27,44 +24,47 @@ public class ACBMain {
 			connection = dbaccessor.getConnection(identity);
 			intents++;
 		}
+		ControladorPartidos partidos = new ControladorPartidos(connection);
+		ControladorJugadores jugadores = new ControladorJugadores(connection);
+		ControladorEquipos equipos = new ControladorEquipos(connection);
 
 		option = menu.menuPral();
 		while (option > 0 && option < 12) {
 			switch (option) {
 			case 1:
-				dbaccessor.mostraEquipos();
+				equipos.mostraEquipos();
 				break;
 
 			case 2:
-				dbaccessor.mostraJugadors();
+				jugadores.mostraJugadors();
 				break;
 
 			case 3:
-				dbaccessor.crearEquip();
+				equipos.crearEquip();
 				break;
 
 			case 4:
-				dbaccessor.crearJugador();
+				jugadores.crearJugador();
 				break;
 
 			case 5:
-				dbaccessor.crearPartit();
+				partidos.crearPartit();
 				break;
 
 			case 6:
-				dbaccessor.mostraJugadorsSenseEquip();
+				jugadores.mostraJugadorsSenseEquip();
 				break;
 
 			case 7:
-				dbaccessor.afegeixJugadorAEquip(connection);
+				equipos.afegeixJugadorAEquip(connection);
 				break;
 
 			case 8:
-				dbaccessor.desassignaArticleARevista(connection);
+				equipos.desassignaJugadorDeEquip(connection);
 				break;
 
 			case 9:
-				dbaccessor.carregaJugador(connection);
+				partidos.carregaEstadistiques(connection);
 				break;
 
 			case 10:
