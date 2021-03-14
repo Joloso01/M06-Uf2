@@ -20,35 +20,43 @@ public class ControladorPartidos {
 
     public void crearPartit() throws SQLException, NumberFormatException {
 
-        Scanner reader = new Scanner(System.in);
+        try {
+            Scanner reader = new Scanner(System.in);
 
 
-        System.out.println("Introdueix el equip local ");
-        String equipLocal = reader.nextLine();
+            System.out.println("Introdueix el equip local ");
+            String equipLocal = reader.nextLine();
 
-        System.out.println("Introdueix el equip visitant");
-        String equipVisitant = reader.nextLine();
+            System.out.println("Introdueix el equip visitant");
+            String equipVisitant = reader.nextLine();
 
-        System.out.println("Introdueix el data del partit (yyyy-mm-dd)");
-        java.sql.Date dateAr = java.sql.Date.valueOf(reader.nextLine());
+            System.out.println("Introdueix el data del partit (yyyy-mm-dd)");
+            java.sql.Date dateAr = java.sql.Date.valueOf(reader.nextLine());
 
-        System.out.println("Introdueix la asistencia");
-        int asistencia = reader.nextInt();
+            System.out.println("Introdueix la asistencia");
+            int asistencia = reader.nextInt();
 
-        System.out.println("Introdueix el mvp del partit (numero de llicencia)");
-        reader.nextLine();
-        String numeroLlicencia = reader.nextLine();
+            System.out.println("Introdueix el mvp del partit (numero de llicencia)");
+            reader.nextLine();
+            String numeroLlicencia = reader.nextLine();
 
-        String sql = "INSERT INTO match (home_team, visitor_team, match_date, attendance, mvp_player) VALUES (?,?,?,?,?)";
-        conn.prepareStatement(sql);
-        PreparedStatement pst = conn.prepareStatement(sql);
 
-        pst.setString(1,equipLocal);
-        pst.setString(2,equipVisitant);
-        pst.setDate(3,dateAr);
-        pst.setInt(4, asistencia);
-        pst.setString(5,numeroLlicencia);
-        pst.executeUpdate();
+            String sql = "INSERT INTO match (home_team, visitor_team, match_date, attendance, mvp_player) VALUES (?,?,?,?,?)";
+            conn.prepareStatement(sql);
+            PreparedStatement pst = conn.prepareStatement(sql);
+
+            pst.setString(1,equipLocal);
+            pst.setString(2,equipVisitant);
+            pst.setDate(3,dateAr);
+            pst.setInt(4, asistencia);
+            pst.setString(5,numeroLlicencia);
+
+            pst.executeUpdate();
+        }catch (Exception e){
+            System.out.println("Ha ocurrido un error al crear el partido");
+        }
+
+
     }
 
     // TODO
