@@ -54,7 +54,7 @@ public class Menu {
 		System.out.println("Inserta contrasenya: ");
 		String pass = br1.readLine();
 
-		Identity identity = null;
+		Identity identity;
 		identity = new Identity(usuari, pass);
 		return identity;
 

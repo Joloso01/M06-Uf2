@@ -1,22 +1,17 @@
 package acb;
 
-import java.io.IOException;
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 public class ControladorJugadores {
-    private Connection conn;
-    private ControladorEquipos controladorEquipos;
+    private final Connection conn;
+    private final ControladorEquipos controladorEquipos;
     public ControladorJugadores(Connection conn) {
         this.conn = conn;
         controladorEquipos = new ControladorEquipos(conn);
     }
 
-    public void crearJugador() throws SQLException, IOException, ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        java.util.Date parsed;
+    public void crearJugador(){
 
         try {
 
@@ -57,7 +52,7 @@ public class ControladorJugadores {
         }
     }
 
-    public void mostraJugadors() throws SQLException, IOException {
+    public void mostraJugadors(){
         try {
             Scanner reader = new Scanner(System.in);
             Statement st = conn.createStatement();
@@ -81,10 +76,9 @@ public class ControladorJugadores {
         }
     }
 
-    public void mostraJugadorsSenseEquip() throws SQLException, IOException {
+    public void mostraJugadorsSenseEquip() throws SQLException {
 
         Statement st = conn.createStatement();
-        Scanner reader = new Scanner(System.in);
         ResultSet rs;
 
         rs = st.executeQuery("select * from player where team_name like 'agente_libre';");

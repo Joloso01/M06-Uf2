@@ -1,11 +1,12 @@
 package acb;
 
-import java.io.*;
-import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
-import java.util.Scanner;
 
 public class DBAccessor {
 	private String dbname;

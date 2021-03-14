@@ -9,16 +9,16 @@ import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 public class ControladorPartidos {
-    private Connection conn;
-    private ControladorEquipos controladorEquipos;
-    private ControladorJugadores controladorJugadores;
+    private final Connection conn;
+    private final ControladorEquipos controladorEquipos;
+    private final ControladorJugadores controladorJugadores;
     public ControladorPartidos(Connection conn) {
         this.conn = conn;
         controladorEquipos = new ControladorEquipos(conn);
         controladorJugadores = new ControladorJugadores(conn);
     }
 
-    public void crearPartit() throws SQLException, NumberFormatException {
+    public void crearPartit() throws NumberFormatException {
 
         try {
             Scanner reader = new Scanner(System.in);
@@ -68,7 +68,7 @@ public class ControladorPartidos {
 
         BufferedReader bufferedReader = new BufferedReader(new FileReader("src/acb/estadistiques.csv"));
         String linea = bufferedReader.readLine();
-        String[] array = new String[0];
+        String[] array;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         java.util.Date parsed;
 
@@ -112,7 +112,7 @@ public class ControladorPartidos {
 
     public void crearEstadisticaDelPartido(String[] array) throws SQLException, NumberFormatException, ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        java.util.Date parsed = null;
+        java.util.Date parsed;
         parsed = sdf.parse(array[2]);
         Date data = new Date(parsed.getTime());
 
@@ -145,7 +145,7 @@ public class ControladorPartidos {
         pst.executeUpdate();
     }
 
-    public void actualizarEstadisticas(String[] array) throws SQLException, NumberFormatException, IOException, ParseException {
+    public void actualizarEstadisticas(String[] array) throws SQLException, NumberFormatException, ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         java.util.Date parsed;
 

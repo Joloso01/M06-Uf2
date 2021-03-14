@@ -1,19 +1,18 @@
 package acb;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.Scanner;
 
 public class ControladorEquipos {
-    private Connection conn;
+    private final Connection conn;
 
     public ControladorEquipos(Connection conn) {
         this.conn = conn;
     }
 
-    public void crearEquip() throws SQLException, NumberFormatException {
+    public void crearEquip() throws NumberFormatException {
         try {
 
             Scanner reader = new Scanner(System.in);
@@ -43,10 +42,10 @@ public class ControladorEquipos {
         }
     }
 
-    public void afegeixJugadorAEquip(Connection conn) throws SQLException {
+    public void afegeixJugadorAEquip(Connection conn) {
         try {
 
-            ResultSet rs = null;
+            ResultSet rs;
             Statement st = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
             InputStreamReader isr = new InputStreamReader(System.in);
             BufferedReader br = new BufferedReader(isr);
@@ -83,11 +82,11 @@ public class ControladorEquipos {
 
     }
 
-    public void desassignaJugadorDeEquip(Connection conn) throws SQLException {
+    public void desassignaJugadorDeEquip(Connection conn){
 
         try {
 
-            ResultSet rs = null;
+            ResultSet rs;
             Statement st = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
             InputStreamReader isr = new InputStreamReader(System.in);
             BufferedReader br = new BufferedReader(isr);
@@ -123,7 +122,7 @@ public class ControladorEquipos {
         }
     }
 
-    public void mostraEquipos() throws SQLException, IOException {
+    public void mostraEquipos() throws SQLException{
         Statement st = conn.createStatement();
         ResultSet rs;
 
